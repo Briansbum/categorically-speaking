@@ -4,24 +4,24 @@
 <body>
   <button id="update" type="button" onclick="update">Click me to generate game cards</button>
 
-  <h2>Letters</h2>
-  <div class="card" id="letter-1"></div>
+  <h2 id="letters" class="heading-hidden">Letters</h2>
+  <div id="letter-1"></div>
   <br>
-  <div class="card" id="letter-2"></div>
+  <div id="letter-2"></div>
   <br>
-  <div class="card" id="letter-3"></div>
+  <div id="letter-3"></div>
   <br>
-  <div class="card" id="letter-4"></div>
+  <div id="letter-4"></div>
 
 
-  <h2>Categories</h2>
-  <div class="card" id="category-1"></div>
+  <h2 id="categories" class="heading-hidden">Categories</h2>
+  <div id="category-1"></div>
   <br>
-  <div class="card" id="category-2"></div>
+  <div id="category-2"></div>
   <br>
-  <div class="card" id="category-3"></div>
+  <div id="category-3"></div>
   <br>
-  <div class="card" id="category-4"></div>
+  <div id="category-4"></div>
   <br>
 </body>
 
@@ -45,12 +45,16 @@
 
   function updateLetter(div) {
     console.log("update letter")
+    document.getElementById("letters").className = 'heading-visible';
     div.innerHTML = available_letters[Math.floor(Math.random()*available_letters.length)];
+    div.className = 'card';
   };
 
   function updateCategory(div) {
     console.log("update category")
+    document.getElementById("categories").className = 'heading-visible';
     div.innerHTML = available_categories[Math.floor(Math.random()*available_categories.length)];
+    div.className = 'card';
   };
 
   document.getElementById("update").onclick = function update() {
@@ -67,5 +71,13 @@
   padding: 2px 16px;
   margin: 20px;
   display: inline-block;
+}
+
+.heading-hidden {
+  visibility: hidden;
+}
+
+.heading-visible {
+  visibility: visible;
 }
 </style>
