@@ -2,9 +2,16 @@
 
 </head>
 <body>
-  <button id="update" type="button" onclick="update">Click me to generate game cards</button>
+  <progress value="0" max="150" id="progressBar"></progress>
+  <br>
+  <button id="start-timer" type="button">Start Timer</button>
+  <button id="reset-timer" type="button">Reset Timer</button>
+  <br>
+  <br>
+  <br>
+  <button id="update" type="button">Click me to generate game cards</button>
 
-  <h2 id="letters" class="heading-hidden">Letters</h2>
+  <h2 id="letters" class="hidden">Letters</h2>
   <div id="letter-1"></div>
   <br>
   <div id="letter-2"></div>
@@ -14,7 +21,7 @@
   <div id="letter-4"></div>
 
 
-  <h2 id="categories" class="heading-hidden">Categories</h2>
+  <h2 id="categories" class="hidden">Categories</h2>
   <div id="category-1"></div>
   <br>
   <div id="category-2"></div>
@@ -45,14 +52,14 @@
 
   function updateLetter(div) {
     console.log("update letter")
-    document.getElementById("letters").className = 'heading-visible';
+    document.getElementById("letters").className = 'visible';
     div.innerHTML = available_letters[Math.floor(Math.random()*available_letters.length)];
     div.className = 'card';
   };
 
   function updateCategory(div) {
     console.log("update category")
-    document.getElementById("categories").className = 'heading-visible';
+    document.getElementById("categories").className = 'visible';
     div.innerHTML = available_categories[Math.floor(Math.random()*available_categories.length)];
     div.className = 'card';
   };
@@ -62,6 +69,27 @@
     letters.forEach(updateLetter)
     categories.forEach(updateCategory)
   };
+
+  var audio = new Audio('a-tone.mp3');
+
+  function interval(){
+    document.getElementById("progressBar").value = 150 - timeleft;
+    timeleft -= 1;
+    if(timeleft <= 0){
+      audio.play();
+    }
+  }
+
+  document.getElementById("reset-timer").onclick = function resetTimer() {
+    timeleft = 150;
+    audio.pause();
+    clearInterval(timer);
+  }
+
+  document.getElementById("start-timer").onclick = function startTimer() {
+    timeleft = 150;
+    var timer = setInterval(interval, 1000);
+  }
 </script>
 
 <style>
@@ -73,11 +101,11 @@
   display: inline-block;
 }
 
-.heading-hidden {
+.hidden {
   visibility: hidden;
 }
 
-.heading-visible {
+.visible {
   visibility: visible;
 }
 </style>
