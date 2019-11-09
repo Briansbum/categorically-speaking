@@ -1,0 +1,71 @@
+<head>
+
+</head>
+<body>
+  <button id="update" type="button" onclick="update">Click me to generate game cards</button>
+
+  <h2>Letters</h2>
+  <div class="card" id="letter-1"></div>
+  <br>
+  <div class="card" id="letter-2"></div>
+  <br>
+  <div class="card" id="letter-3"></div>
+  <br>
+  <div class="card" id="letter-4"></div>
+
+
+  <h2>Categories</h2>
+  <div class="card" id="category-1"></div>
+  <br>
+  <div class="card" id="category-2"></div>
+  <br>
+  <div class="card" id="category-3"></div>
+  <br>
+  <div class="card" id="category-4"></div>
+  <br>
+</body>
+
+<script>
+  var available_letters = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+  var available_categories = ["Authors (male or female)","Fruits and nuts","Classical composers","Currencies","Things found at school","Weapons","Weather terms","Things found in a supermarket","Foreign foods","Toys","Book titles","Sports played with a ball","Things made of metal","Female singer","Things that are sharp","Historical characters","Holiday destinations","Mountains or mountain ranges","Parts of a char","Famous tennis players","Animals commonly found in a zoo","Things found in a lady's handbag","Things that can be seen in the sky","Things associated with camping","TV Programmes","Confectionary","Things associated with the railways","DIY or garden tools","British towns or cities","Modes of transport","Non-british cities","Items associated with motor racing","Things associated with christmas","Movies","Diseases or illnesses","Foods that are usually eaten cold","Things found in the bathroom","Rivers","Things associated with exercise","Sandwich fillings","Capital cities","Battles or wars","Flowers","Something in this room","Actors","Actresses","Military ranks","Animals","Reptiles or amphibians","Famous Footballers","Things found in a jewellers","Hobbies","Cosmetics or toiletries","TV celebrities","Things associated with the circus","Car manufacturers","Fish","Retailers' names","Articles of clothing","Things associated with an airport","Things found in the fridge","Things found in a building site","Famous sportswomen","Airlines","Girls forenames","Things found at a fairground","Product brand names","Boys' forenames","Things found on a farm","Sports played without a ball","Trees","Things found in the office","Crimes","Indoor games","Things found in the ocean","Units of measurement","Things found in a nursery","Herbs and spices","Disney characters","Musical instruments","Male singers","Items of furniture","British seaside resorts","Things associated with the seaside","Politicians and world leaders","Colours","Alcoholic drinks","Things found in a park","Famous sportsmen","Things found in the garden","Types of material or fabric","Rocks, gems or minerals","Financial terms","Countries","Famous painters","Vegetables","Famous buildings or landmarks","Things made of paper","Things found in or associated with a church","Breeds of dog","Dances or dancers","Terms of endearment","Types of wine","Seas oceans and lakes","Pop groups","Cartoon characters","Symbols or things found on a map","Astronomical terms","Things worn on the feet","Company names","Fictional detectives","Things found in a football match","Birds","Non-Alcoholic drinks","Magazines or comics","TV soap characters","Things found in the kitchen","Study subjects or courses","Household electrical appliances","Occupations","Leisure pursuits","Things that carry passengers","US states or cities","Fictional characters","Breakfast foods","People who wear uniforms","Things you take on holiday","Things found in a bakery"];
+
+  var letters = [ 
+    document.getElementById("letter-1"),
+    document.getElementById("letter-2"),
+    document.getElementById("letter-3"),
+    document.getElementById("letter-4")
+  ];
+
+  var categories = [
+    document.getElementById("category-1"),
+    document.getElementById("category-2"),
+    document.getElementById("category-3"),
+    document.getElementById("category-4")
+  ];
+
+  function updateLetter(div) {
+    console.log("update letter")
+    div.innerHTML = available_letters[Math.floor(Math.random()*available_letters.length)];
+  };
+
+  function updateCategory(div) {
+    console.log("update category")
+    div.innerHTML = available_categories[Math.floor(Math.random()*available_categories.length)];
+  };
+
+  document.getElementById("update").onclick = function update() {
+    console.log("pressed")
+    letters.forEach(updateLetter)
+    categories.forEach(updateCategory)
+  };
+</script>
+
+<style>
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  padding: 2px 16px;
+  margin: 20px;
+  display: inline-block;
+}
+</style>
