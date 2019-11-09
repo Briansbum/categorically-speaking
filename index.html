@@ -9,27 +9,62 @@
   <br>
   <br>
   <br>
-  <button id="update" type="button">Click me to generate game cards</button>
+  <button id="update" type="button">Generate game cards</button>
+  <button id="clear" type="button">Clear game cards</button>
 
   <h2 id="letters" class="hidden">Letters</h2>
   <div id="letter-1"></div>
-  <br>
   <div id="letter-2"></div>
-  <br>
   <div id="letter-3"></div>
-  <br>
   <div id="letter-4"></div>
 
 
   <h2 id="categories" class="hidden">Categories</h2>
   <div id="category-1"></div>
-  <br>
   <div id="category-2"></div>
-  <br>
   <div id="category-3"></div>
-  <br>
   <div id="category-4"></div>
+
   <br>
+
+  <input id="gameboard-enable" type="checkbox" onclick="if (document.getElementById('gameboard-enable').checked) { document.getElementById('gameboard').className = 'visible' } else { document.getElementById('gameboard').className = 'hidden' };">Tick to show grid</input>
+  <table id="gameboard" class="hidden">
+    <tr>
+      <th id="empty"></th>
+      <th><textarea></textarea></th>
+      <th><textarea></textarea></th>
+      <th><textarea></textarea></th>
+      <th><textarea></textarea></th>
+    </tr>
+    <tr>
+      <th><textarea></textarea></th>
+      <th><textarea></textarea></th>
+      <th><textarea></textarea></th>
+      <th><textarea></textarea></th>
+      <th><textarea></textarea></th>
+    </tr>
+    <tr>
+      <th><textarea></textarea></th>
+      <th><textarea></textarea></th>
+      <th><textarea></textarea></th>
+      <th><textarea></textarea></th>
+      <th><textarea></textarea></th>
+    </tr>
+    <tr>
+      <th><textarea></textarea></th>
+      <th><textarea></textarea></th>
+      <th><textarea></textarea></th>
+      <th><textarea></textarea></th>
+      <th><textarea></textarea></th>
+    </tr>
+    <tr>
+      <th><textarea></textarea></th>
+      <th><textarea></textarea></th>
+      <th><textarea></textarea></th>
+      <th><textarea></textarea></th>
+      <th><textarea></textarea></th>
+    </tr>
+  </table>
 </body>
 
 <script>
@@ -51,23 +86,27 @@
   ];
 
   function updateLetter(div) {
-    console.log("update letter")
     document.getElementById("letters").className = 'visible';
     div.innerHTML = available_letters[Math.floor(Math.random()*available_letters.length)];
     div.className = 'card';
   };
 
   function updateCategory(div) {
-    console.log("update category")
     document.getElementById("categories").className = 'visible';
     div.innerHTML = available_categories[Math.floor(Math.random()*available_categories.length)];
     div.className = 'card';
   };
 
   document.getElementById("update").onclick = function update() {
-    console.log("pressed")
-    letters.forEach(updateLetter)
-    categories.forEach(updateCategory)
+    letters.forEach(updateLetter);
+    categories.forEach(updateCategory);
+  };
+
+  document.getElementById("clear").onclick = function update() {
+    letters.forEach(function(div) { div.className = 'hidden' });
+    categories.forEach(function(div) { div.className = 'hidden' });
+    document.getElementById("letters").className = 'hidden';
+    document.getElementById("categories").className = 'hidden';
   };
 
   var audio = new Audio('a-tone.mp3');
