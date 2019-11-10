@@ -32,44 +32,45 @@
   </div>
   
   <div>
-    <input id="gameboard-enable" type="checkbox" onclick="if (document.getElementById('gameboard-enable').checked) { document.getElementById('gameboard').className = 'visible' } else { document.getElementById('gameboard').className = 'hidden' };">Tick to show grid</input>
+    <input id="gameboard-enable" type="checkbox" onclick="if (document.getElementById('gameboard-enable').checked) { document.getElementById('gameboard').className = 'visible'; document.getElementById('clear-grid').className = 'myButton' } else { document.getElementById('gameboard').className = 'hidden'; document.getElementById('clear-grid').className = 'hidden' }">Tick to show grid</input>
     <table id="gameboard" class="hidden">
       <tr>
         <th id="empty"></th>
-        <th><div id="letter-1"></div></th>
-        <th><div id="letter-2"></div></th>
-        <th><div id="letter-3"></div></th>
-        <th><div id="letter-4"></div></th>
+        <th><div id="grid-letter-1"></div></th>
+        <th><div id="grid-letter-2"></div></th>
+        <th><div id="grid-letter-3"></div></th>
+        <th><div id="grid-letter-4"></div></th>
       </tr>
       <tr>
-        <th><div id="category-1"></div></th>
-        <th><textarea></textarea></th>
-        <th><textarea></textarea></th>
-        <th><textarea></textarea></th>
-        <th><textarea></textarea></th>
+        <th><div id="grid-category-1"></div></th>
+        <th><textarea class="entry-field"></textarea></th>
+        <th><textarea class="entry-field"></textarea></th>
+        <th><textarea class="entry-field"></textarea></th>
+        <th><textarea class="entry-field"></textarea></th>
       </tr>
       <tr>
-        <th><div id="category-2"></div></th>
-        <th><textarea></textarea></th>
-        <th><textarea></textarea></th>
-        <th><textarea></textarea></th>
-        <th><textarea></textarea></th>
+        <th><div id="grid-category-2"></div></th>
+        <th><textarea class="entry-field"></textarea></th>
+        <th><textarea class="entry-field"></textarea></th>
+        <th><textarea class="entry-field"></textarea></th>
+        <th><textarea class="entry-field"></textarea></th>
       </tr>
       <tr>
-        <th><div id="category-3"></div></th>
-        <th><textarea></textarea></th>
-        <th><textarea></textarea></th>
-        <th><textarea></textarea></th>
-        <th><textarea></textarea></th>
+        <th><div id="grid-category-3"></div></th>
+        <th><textarea class="entry-field"></textarea></th>
+        <th><textarea class="entry-field"></textarea></th>
+        <th><textarea class="entry-field"></textarea></th>
+        <th><textarea class="entry-field"></textarea></th>
       </tr>
       <tr>
-        <th><div id="category-4"></div></th>
-        <th><textarea></textarea></th>
-        <th><textarea></textarea></th>
-        <th><textarea></textarea></th>
-        <th><textarea></textarea></th>
+        <th><div id="grid-category-4"></div></th>
+        <th><textarea class="entry-field"></textarea></th>
+        <th><textarea class="entry-field"></textarea></th>
+        <th><textarea class="entry-field"></textarea></th>
+        <th><textarea class="entry-field"></textarea></th>
       </tr>
     </table>
+    <button id="clear-grid" class="hidden">Clear Grid</button>
   </div>
 </body>
 
@@ -91,6 +92,20 @@
     document.getElementById("category-4")
   ];
 
+  var gridLetters = [ 
+    document.getElementById("grid-letter-1"),
+    document.getElementById("grid-letter-2"),
+    document.getElementById("grid-letter-3"),
+    document.getElementById("grid-letter-4")
+  ];
+
+  var gridCategories = [
+    document.getElementById("grid-category-1"),
+    document.getElementById("grid-category-2"),
+    document.getElementById("grid-category-3"),
+    document.getElementById("grid-category-4")
+  ];
+
   var letterSeedPart = [];
   var categorySeedPart = [];
   var qLetterSeedPart = [];
@@ -101,48 +116,77 @@
   if (urlParams.has('letters')) {
     qLetterSeedPart = atob(urlParams.get("letters")).split(',');
     qCategorySeedPart = atob(urlParams.get("categories")).split(',');
-    update();
+    updateCards();
+    if (! document.getElementById('gameboard-enable').checked) {
+      document.getElementById("letters").className = 'visible';
+      document.getElementById("categories").className = 'visible';
+      letters.forEach(showCards);
+      categories.forEach(showCards);
+    }
+    updateGrid();
   }
 
   function updateLetter(div, index) {
-    document.getElementById("letters").className = 'visible';
     if (qLetterSeedPart.length > 0) {
       var letterIndex = qLetterSeedPart[index];
+      letterSeedPart.push(letterIndex);
+    } else if (letterSeedPart[index] != null) {
+      var letterIndex = letterSeedPart[index];
     } else {
-      var letterIndex = Math.floor(Math.random()*available_letters.length);  
+      var letterIndex = Math.floor(Math.random()*available_letters.length);
+      letterSeedPart.push(letterIndex);
     }
     div.innerHTML = available_letters[letterIndex];
-    div.className = 'visible';
-    letterSeedPart.push(letterIndex);
-    div.className = 'card';
   };
 
   function updateCategory(div, index) {
-    document.getElementById("categories").className = 'visible';
     if (qCategorySeedPart.length > 0) {
       var categoryIndex = qCategorySeedPart[index];
+      categorySeedPart.push(categoryIndex);
+    } else if (categorySeedPart[index] != null) {
+      var categoryIndex = categorySeedPart[index];
     } else {
       var categoryIndex = Math.floor(Math.random()*available_categories.length);
+      categorySeedPart.push(categoryIndex);
     }
     div.innerHTML = available_categories[categoryIndex];
-    div.className = 'visible';
-    categorySeedPart.push(categoryIndex);
-    div.className = 'card';
   };
 
   document.getElementById('generate').onclick = function () {
     qLetterSeedPart = [];
     qCategorySeedPart = [];
-    update();
-  }
-  
-  function update() {
     letterSeedPart = [];
     categorySeedPart = [];
+    updateCards();
+    updateGrid();
+    document.getElementById("letters").className = 'visible';
+    document.getElementById("categories").className = 'visible';
+    letters.forEach(showCards);
+    categories.forEach(showCards);
+  }
+
+  function showCards(div) {
+    div.className = 'visible card';
+  }
+  
+  function updateCards() {
     letters.forEach(updateLetter);
     categories.forEach(updateCategory);
     insertParams(letterSeedPart, categorySeedPart);
-  };
+  }
+
+  function updateGrid() {
+    gridLetters.forEach(updateLetter);
+    gridCategories.forEach(updateCategory);
+    insertParams(letterSeedPart, categorySeedPart);
+  }
+
+  document.getElementById("clear-grid").onclick = function () {
+    var fields = document.getElementsByClassName("entry-field");
+    for(var i=0; i<fields.length; i++) {
+      fields[i].value = "";
+    }
+  }
 
   var audio = new Audio('a-tone.mp3');
 
