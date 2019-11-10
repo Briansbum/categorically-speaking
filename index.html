@@ -2,69 +2,75 @@
   <title>Categorically Speaking</title>
 </head>
 <body>
-  <progress value="0" max="150" id="progressBar"></progress>
-  <br>
-  <button id="start-timer" type="button">Start Timer</button>
-  <button id="reset-timer" type="button">Reset Timer</button>
-  <br>
-  <br>
-  <br>
-  <button id="update" type="button">Generate game cards</button>
-  <button id="clear" type="button">Clear game cards</button>
+  <div>
+    <progress value="0" max="150" id="progressBar"></progress>
+    <br>
+    <button id="start-timer" type="button" class="myButton">Start Timer</button>
+    <button id="reset-timer" type="button" class="myButton">Reset Timer</button>
+    </div>
+    <br>
+    <div>
+    <button id="generate" type="button" class="myButton">Generate game cards</button>
+    <div style="display:inline-block; vertical-align:top;">
+      <button class="js-copy-link-btn myButton">Copy share link</button><br /><br />
+    </div>
+  </div>
 
-  <h2 id="letters" class="hidden">Letters</h2>
-  <div id="letter-1"></div>
-  <div id="letter-2"></div>
-  <div id="letter-3"></div>
-  <div id="letter-4"></div>
+  <div>
+    <h2 id="letters" class="hidden">Letters</h2>
+    <div id="letter-1" class="hidden"></div>
+    <div id="letter-2" class="hidden"></div>
+    <div id="letter-3" class="hidden"></div>
+    <div id="letter-4" class="hidden"></div>
 
 
-  <h2 id="categories" class="hidden">Categories</h2>
-  <div id="category-1"></div>
-  <div id="category-2"></div>
-  <div id="category-3"></div>
-  <div id="category-4"></div>
-
-  <br>
-
-  <input id="gameboard-enable" type="checkbox" onclick="if (document.getElementById('gameboard-enable').checked) { document.getElementById('gameboard').className = 'visible' } else { document.getElementById('gameboard').className = 'hidden' };">Tick to show grid</input>
-  <table id="gameboard" class="hidden">
-    <tr>
-      <th id="empty"></th>
-      <th><textarea></textarea></th>
-      <th><textarea></textarea></th>
-      <th><textarea></textarea></th>
-      <th><textarea></textarea></th>
-    </tr>
-    <tr>
-      <th><textarea></textarea></th>
-      <th><textarea></textarea></th>
-      <th><textarea></textarea></th>
-      <th><textarea></textarea></th>
-      <th><textarea></textarea></th>
-    </tr>
-    <tr>
-      <th><textarea></textarea></th>
-      <th><textarea></textarea></th>
-      <th><textarea></textarea></th>
-      <th><textarea></textarea></th>
-      <th><textarea></textarea></th>
-    </tr>
-    <tr>
-      <th><textarea></textarea></th>
-      <th><textarea></textarea></th>
-      <th><textarea></textarea></th>
-      <th><textarea></textarea></th>
-      <th><textarea></textarea></th>
-    </tr>
-    <tr>
-      <th><textarea></textarea></th>
-      <th><textarea></textarea></th>
-      <th><textarea></textarea></th>
-      <th><textarea></textarea></th>
-      <th><textarea></textarea></th>
-    </tr>
-  </table>
+    <h2 id="categories" class="hidden">Categories</h2>
+    <div id="category-1" class="hidden"></div>
+    <div id="category-2" class="hidden"></div>
+    <div id="category-3" class="hidden"></div>
+    <div id="category-4" class="hidden"></div>
+  </div>
+  
+  <div>
+    <input id="gameboard-enable" type="checkbox" onclick="if (document.getElementById('gameboard-enable').checked) { document.getElementById('gameboard').className = 'visible' } else { document.getElementById('gameboard').className = 'hidden' };">Tick to show grid</input>
+    <table id="gameboard" class="hidden">
+      <tr>
+        <th id="empty"></th>
+        <th><div id="letter-1"></div></th>
+        <th><div id="letter-2"></div></th>
+        <th><div id="letter-3"></div></th>
+        <th><div id="letter-4"></div></th>
+      </tr>
+      <tr>
+        <th><div id="category-1"></div></th>
+        <th><textarea></textarea></th>
+        <th><textarea></textarea></th>
+        <th><textarea></textarea></th>
+        <th><textarea></textarea></th>
+      </tr>
+      <tr>
+        <th><div id="category-2"></div></th>
+        <th><textarea></textarea></th>
+        <th><textarea></textarea></th>
+        <th><textarea></textarea></th>
+        <th><textarea></textarea></th>
+      </tr>
+      <tr>
+        <th><div id="category-3"></div></th>
+        <th><textarea></textarea></th>
+        <th><textarea></textarea></th>
+        <th><textarea></textarea></th>
+        <th><textarea></textarea></th>
+      </tr>
+      <tr>
+        <th><div id="category-4"></div></th>
+        <th><textarea></textarea></th>
+        <th><textarea></textarea></th>
+        <th><textarea></textarea></th>
+        <th><textarea></textarea></th>
+      </tr>
+    </table>
+  </div>
 </body>
 
 <script>
@@ -85,28 +91,57 @@
     document.getElementById("category-4")
   ];
 
-  function updateLetter(div) {
+  var letterSeedPart = [];
+  var categorySeedPart = [];
+  var qLetterSeedPart = [];
+  var qCategorySeedPart = [];
+
+  var urlParams = new URLSearchParams(window.location.search);
+
+  if (urlParams.has('letters')) {
+    qLetterSeedPart = atob(urlParams.get("letters")).split(',');
+    qCategorySeedPart = atob(urlParams.get("categories")).split(',');
+    update();
+  }
+
+  function updateLetter(div, index) {
     document.getElementById("letters").className = 'visible';
-    div.innerHTML = available_letters[Math.floor(Math.random()*available_letters.length)];
+    if (qLetterSeedPart.length > 0) {
+      var letterIndex = qLetterSeedPart[index];
+    } else {
+      var letterIndex = Math.floor(Math.random()*available_letters.length);  
+    }
+    div.innerHTML = available_letters[letterIndex];
+    div.className = 'visible';
+    letterSeedPart.push(letterIndex);
     div.className = 'card';
   };
 
-  function updateCategory(div) {
+  function updateCategory(div, index) {
     document.getElementById("categories").className = 'visible';
-    div.innerHTML = available_categories[Math.floor(Math.random()*available_categories.length)];
+    if (qCategorySeedPart.length > 0) {
+      var categoryIndex = qCategorySeedPart[index];
+    } else {
+      var categoryIndex = Math.floor(Math.random()*available_categories.length);
+    }
+    div.innerHTML = available_categories[categoryIndex];
+    div.className = 'visible';
+    categorySeedPart.push(categoryIndex);
     div.className = 'card';
   };
 
-  document.getElementById("update").onclick = function update() {
+  document.getElementById('generate').onclick = function () {
+    qLetterSeedPart = [];
+    qCategorySeedPart = [];
+    update();
+  }
+  
+  function update() {
+    letterSeedPart = [];
+    categorySeedPart = [];
     letters.forEach(updateLetter);
     categories.forEach(updateCategory);
-  };
-
-  document.getElementById("clear").onclick = function update() {
-    letters.forEach(function(div) { div.className = 'hidden' });
-    categories.forEach(function(div) { div.className = 'hidden' });
-    document.getElementById("letters").className = 'hidden';
-    document.getElementById("categories").className = 'hidden';
+    insertParams(letterSeedPart, categorySeedPart);
   };
 
   var audio = new Audio('a-tone.mp3');
@@ -119,32 +154,121 @@
     }
   }
 
-  document.getElementById("reset-timer").onclick = function resetTimer() {
+  document.getElementById("reset-timer").onclick = function () {
     timeleft = 150;
     audio.pause();
     clearInterval(timer);
   }
 
-  document.getElementById("start-timer").onclick = function startTimer() {
+  document.getElementById("start-timer").onclick = function () {
     timeleft = 150;
     var timer = setInterval(interval, 1000);
   }
+
+  var storedKVP = [];
+
+  function insertParams(letters, categories) {
+    lKey = encodeURI("letters");
+    lValue = encodeURI(btoa(letters));
+    cKey = encodeURI("categories");
+    cValue = encodeURI(btoa(categories));
+
+    var kvp = [];
+
+    kvp.push([lKey,lValue].join('='));
+    kvp.push([cKey,cValue].join('='));
+
+    storedKVP += kvp.join('&');
+  }
+
+  function copyTextToClipboard(text) {
+    var textArea = document.createElement("textarea");
+
+    // Place in top-left corner of screen regardless of scroll position.
+    textArea.style.position = 'fixed';
+    textArea.style.top = 0;
+    textArea.style.left = 0;
+
+    // Ensure it has a small width and height. Setting to 1px / 1em
+    // doesn't work as this gives a negative w/h on some browsers.
+    textArea.style.width = '2em';
+    textArea.style.height = '2em';
+
+    // We don't need padding, reducing the size if it does flash render.
+    textArea.style.padding = 0;
+
+    // Clean up any borders.
+    textArea.style.border = 'none';
+    textArea.style.outline = 'none';
+    textArea.style.boxShadow = 'none';
+
+    // Avoid flash of white box if rendered for any reason.
+    textArea.style.background = 'transparent';
+
+    textArea.value = text;
+
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+      var successful = document.execCommand('copy');
+      var msg = successful ? 'successful' : 'unsuccessful';
+      console.log('Copying text command was ' + msg);
+    } catch (err) {
+      console.log('Oops, unable to copy');
+    }
+
+    document.body.removeChild(textArea);
+  }
+
+  var copyLinkBtn = document.querySelector('.js-copy-link-btn');
+
+  copyLinkBtn.addEventListener('click', function(event) {
+    copyTextToClipboard(window.location.href.split('?')[0] + '?' + storedKVP);
+  });
 </script>
 
 <style>
-.card {
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  transition: 0.3s;
-  padding: 2px 16px;
-  margin: 20px;
-  display: inline-block;
-}
+  .card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    padding: 2px 16px;
+    margin: 20px;
+    display: inline-block;
+  }
 
-.hidden {
-  visibility: hidden;
-}
+  .hidden {
+    visibility: hidden;
+  }
 
-.visible {
-  visibility: visible;
-}
+  .visible {
+    visibility: visible;
+  }
+
+  .myButton {
+    background-color:#44c767;
+    border-radius:28px;
+    border:1px solid #18ab29;
+    display:inline-block;
+    cursor:pointer;
+    color:#ffffff;
+    font-family:Arial;
+    font-size:17px;
+    padding:5px 21px;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #2f6627;
+  }
+  .myButton:hover {
+    background-color:#5cbf2a;
+  }
+  .myButton:active {
+    position:relative;
+    top:1px;
+  }
+
+  progress[value] {
+    width: 250px;
+    height: 20px;
+  } 
 </style>
