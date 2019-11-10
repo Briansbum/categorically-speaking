@@ -127,6 +127,21 @@
     updateGrid();
   }
 
+  function generateEntry(arr, checkArr) {
+    var retVal = 0;
+    var returnIndex = Math.floor(Math.random()*arr.length);
+    if (checkArr.includes(returnIndex)) {
+      console.log("recurse");
+      retVal = generateEntry(arr, checkArr);
+    } else {
+      console.log("checkArr = " + checkArr);
+      console.log("arr[returnIndex] = " + arr[returnIndex]);
+      console.log("checkArr includes = " + checkArr.includes(arr[returnIndex]));
+      retVal = returnIndex;
+    }
+    return retVal
+  }
+
   function updateLetter(div, index) {
     if (qLetterSeedPart.length > 0) {
       var letterIndex = qLetterSeedPart[index];
@@ -134,7 +149,7 @@
     } else if (letterSeedPart[index] != null) {
       var letterIndex = letterSeedPart[index];
     } else {
-      var letterIndex = Math.floor(Math.random()*available_letters.length);
+      var letterIndex = generateEntry(available_letters, letterSeedPart);
       letterSeedPart.push(letterIndex);
     }
     div.innerHTML = available_letters[letterIndex];
@@ -147,7 +162,7 @@
     } else if (categorySeedPart[index] != null) {
       var categoryIndex = categorySeedPart[index];
     } else {
-      var categoryIndex = Math.floor(Math.random()*available_categories.length);
+      var categoryIndex = generateEntry(available_categories, categorySeedPart);
       categorySeedPart.push(categoryIndex);
     }
     div.innerHTML = available_categories[categoryIndex];
