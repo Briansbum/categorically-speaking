@@ -1,5 +1,7 @@
 <head>
   <title>Categorically Speaking</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 <body>
   <div>
@@ -14,6 +16,9 @@
     <button id="generate" type="button" class="myButton">Generate game cards</button>
     <div style="display:inline-block; vertical-align:top;">
       <button class="js-copy-link-btn myButton">Copy share link</button><br /><br />
+    </div>
+    <div style="display:inline-block; vertical-align:top;">
+      <button class="js-help-btn myButton">How to play</button><br /><br />
     </div>
   </div>
 
@@ -131,12 +136,8 @@
     var retVal = 0;
     var returnIndex = Math.floor(Math.random()*arr.length);
     if (checkArr.includes(returnIndex)) {
-      console.log("recurse");
       retVal = generateEntry(arr, checkArr);
     } else {
-      console.log("checkArr = " + checkArr);
-      console.log("arr[returnIndex] = " + arr[returnIndex]);
-      console.log("checkArr includes = " + checkArr.includes(arr[returnIndex]));
       retVal = returnIndex;
     }
     return retVal
